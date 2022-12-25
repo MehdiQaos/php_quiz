@@ -4,70 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background-color: black;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-size: 62.5%;
-        }
-
-        h1 {
-            font-size: 5.4rem;
-            color: white;
-            margin-bottom: 5rem;
-        }
-
-        h2 {
-            font-size: 4.2rem;
-            margin-bottom: 4rem;
-        }
-
-        .container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        #home {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .btn {
-            width: 40rem;
-            background-color: yellow;
-            font-size: 3rem;
-            text-decoration: none;
-            text-align: center;
-            padding: 2rem 0;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-        }
-
-        .btn:hover {
-            cursor: pointer;
-            transform: scale(1.02);
-        }
-    </style>
+    <link rel="stylesheet" href="styles/main.css">
     <title>Home Page</title>
 </head>
 <body>
     <div class="container">
-        <div id="home">
+        <div id="home" class="flex-column flex-center">
             <h1>Ready to play?</h1>
             <a href="/game.html" class="btn">Play</a>
-            <a href="/highscores.html" class="btn">High Scores</a>
+            <a href="/highscores.html" id="highscores-btn" class="btn">High Scores</a>
         </div>
     </div>
 </body>
