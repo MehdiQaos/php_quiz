@@ -57,12 +57,13 @@ userNameInput.addEventListener('keyup', () => {
 
 save_score_btn.addEventListener('click', (e) => {
     e.preventDefault();
-    const userName = document.getElementById('username').value;
+    const userName = document.getElementById('username');
     const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
     const newScore = {
         score: score,
-        name: userName
+        name: userName.value
     };
+    userName.value = '';
     highScores.push(newScore);
     highScores.sort((a, b) => b.score - a.score);
     highScores.splice(MAX_HIGH_SCORES);
@@ -141,7 +142,7 @@ function remove_choices() {
 
 function make_choices(choices) {
     shuffle(choices);
-    let letterCode = 65;
+    let letterCode = 65; // ASCII code of 'A'
     choices.forEach(choice => {
         let quiz = document.getElementById('quiz');
         quiz.innerHTML += 
