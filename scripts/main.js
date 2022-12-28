@@ -1,3 +1,5 @@
+import { allQuestions } from "./data.js";
+
 const containers = document.querySelectorAll('.container');
 const home_section = document.getElementById('home-section');
 const quiz_section = document.getElementById('quiz-section');
@@ -11,6 +13,13 @@ const save_score_btn = document.getElementById('save_score_Btn');
 const saving_to_quiz_btn = document.getElementById('saving_to_quiz');
 const saving_to_home_btn = document.getElementById('saving_to_home');
 const userNameInput = document.getElementById('username');
+
+const userName = document.getElementById('username');
+const MAX_HIGH_SCORES = 5;
+
+let question, score = 0, questionNumber = 0, numQuestions = allQuestions.length;
+const SCORE_POINTS = 50;
+let availableQuestions;
 
 function go_home() {
     containers.forEach(container => container.classList.add('hidden'));
@@ -44,6 +53,7 @@ highScores_to_home_btn.addEventListener('click', () => {
 saving_to_quiz_btn.addEventListener('click', () => {
     scoreSaving_section.classList.add('hidden');
     quiz_section.classList.remove('hidden');
+    start_quiz();
 });
 
 saving_to_home_btn.addEventListener('click', () => {
@@ -57,7 +67,6 @@ userNameInput.addEventListener('keyup', () => {
 
 save_score_btn.addEventListener('click', (e) => {
     e.preventDefault();
-    const userName = document.getElementById('username');
     const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
     const newScore = {
         score: score,
@@ -73,65 +82,11 @@ save_score_btn.addEventListener('click', (e) => {
 });
 
 // quiz section
-const MAX_HIGH_SCORES = 5;
-let allQuestions = [
-    {
-        question: "what is 2 + 2?",
-        choices: [
-            "4",
-            "3",
-            "50",
-            "8"
-        ],
-        time: 60,
-        multiple: false,
-        answer: "1"
-    },
-    {
-        question: "city with the tallest building?",
-        choices: [
-            "NY",
-            "Casablanca",
-            "Dubai",
-            "Shanghai",
-        ],
-        time: 30,
-        multiple: false,
-        answer: "3"
-    },
-    {
-        question: "best player in the world?",
-        choices: [
-            "Neymar",
-            "Haaland",
-            "Mbape",
-            "Messi",
-        ],
-        time: 30,
-        multiple: false,
-        answer: "4"
-    },
-    {
-        question: "Who got the 4th place in the world cup?",
-        choices: [
-            "Brazil",
-            "Argentina",
-            "Morocco",
-            "Algeria",
-        ],
-        time: 30,
-        multiple: false,
-        answer: "3"
-    }
-];
 
-const questionElm = document.getElementById("question");
-let question, score = 0, questionNumber = 0, numQuestions = allQuestions.length;
-const SCORE_POINTS = 50;
-let availableQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
 
 function start_quiz() {
     score = 0, questionNumber = 0, numQuestions = allQuestions.length;
+    document.getElementById('score').innerText = score;
     availableQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
     new_question();
 }
@@ -145,11 +100,15 @@ function make_choices(choices) {
     let letterCode = 65; // ASCII code of 'A'
     choices.forEach(choice => {
         let quiz = document.getElementById('quiz');
-        quiz.innerHTML += 
-            `<div class="choice-container">
-                <p class="choice-prefix">${String.fromCharCode(letterCode++)}</p>
-                <p class="choice-text" data-number="${choice.number}">${choice.text}</p>
-            </div>`;
+        const choiceContainer = document.createElement('div');
+        choiceContainer.dataset.number = choice.number;
+        choiceContainer.classList.add('choice-container');
+        choiceContainer.innerHTML = 
+            `<p class="choice-prefix">${String.fromCharCode(letterCode++)}</p>
+             <p class="choice-text"></p>
+            `;
+        choiceContainer.querySelector('.choice-text').innerText = choice.text;
+        quiz.appendChild(choiceContainer);
         
         document.querySelectorAll('.choice-container').forEach(choice => {
             choice.addEventListener('click', get_answer);
@@ -176,7 +135,7 @@ function new_question() {
     document.getElementById('progressBarFull').style.width = `${Math.floor(questionNumber / numQuestions * 100)}%`; 
     document.getElementById('progressText').innerText = `Question ${questionNumber} of ${numQuestions}`;
     let choices = question.choices;
-    assoc_choices = [];
+    const assoc_choices = [];
     for (const [index, choice] of choices.entries()) {
         assoc_choices.push({number: index + 1, text: choice});
     }
@@ -184,12 +143,21 @@ function new_question() {
 }
 
 function get_answer(e) {
-    let number = e.target.dataset.number;
+    let number = this.dataset.number;
     if (question.answer === number) {
         score += SCORE_POINTS;
         document.getElementById('score').innerText = score;
+        this.classList.add('correct');
     }
-    new_question();
+    else {
+        this.classList.add('incorrect');
+        document.querySelectorAll('.choice-container').forEach(choice => {
+            if (choice.dataset.number == question.answer) {
+                choice.classList.add('correct');
+            }
+        });
+    }
+    setTimeout(() => new_question(), 1000);
 }
 
 go_home();
