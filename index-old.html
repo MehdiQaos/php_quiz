@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="styles/main.css"> -->
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+    <title>Home Page</title>
+</head>
+<body>
+    <!-- begin section -->
+    <section class="container" id="begin-section">
+        <div id="home" class="flex-column flex-center">
+            <h1>Welcome</h1>
+            <button id="signin-btn" class="btn">Sign in<img src="images/user.png" width="25rem" height="auto" class="icon" alt=""></button>
+            <button id="signup-btn" class="btn yellow-btn">Sign up<img src="images/add-user.png" width="25rem" height="auto" class="icon" alt=""></button>
+        </div>
+    </section>
+    <!-- home section -->
+    <section class="container" id="home-section">
+        <div id="home" class="flex-column flex-center">
+            <h1>Ready to play?</h1>
+            <button id="play-btn" class="btn">Play</button>
+            <button id="highscores-btn" class="btn yellow-btn">High Scores<i class="fas fa-crown"></i></button>
+        </div>
+    </section>
+
+    <!-- quiz section -->
+    <section class="container" id="quiz-section" style="height: auto;">
+        <div id="quiz" class="justify-center flex-column">
+            <div id="quiz-info">
+                <div class="quiz-info-item">
+                    <p id="progressText" class="quiz-info-prefix">Question</p>
+                    <div id="progressBar">
+                        <div id="progressBarFull"></div>
+                    </div>
+                </div>
+                <div class="quiz-info-item">
+                    <p class="quiz-info-prefix">Score</p>
+                    <h2 class="quiz-info-main-text" id="score">0</h1>
+                </div>
+            </div>
+            <div id="timer-progress">
+                <div id="timer-progressFull"></div>
+            </div>
+            <div style="margin-left: auto;">
+                <h1 id="timer">10</h1>
+            </div>
+            <h1 id="question">What is the answer to this question?</h1>
+            <!-- TODO: remove this dummy choices -->
+            <div class="choice-container">
+                <p class="choice-prefix">A</p>
+                <p class="choice-text" data-number="1">Choice 1</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">B</p>
+                <p class="choice-text" data-number="2">Choice 2</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">C</p>
+                <p class="choice-text" data-number="3">Choice 3</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">D</p>
+                <p class="choice-text" data-number="4">Choice 4</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- score saving section -->
+    <section class="container" id="score-saving-section">
+        <div id="end" class="flex-center flex-column">
+            <h1 id="finalScore">0</h1>
+            <form class="end-form-container">
+                <h2 id="end-text">Enter your name to save your score!</h2>
+                <input type="text" name="name" id="username" placeholder="Enter your name">
+                <button class="btn" id="save_score_Btn" type="submit" disabled>Save</button>
+            </form>
+            <button id="saving_to_quiz" class="btn">Play again</button>
+            <button id="saving_to_home" class="btn">Go Home <i class="fas fa-home"></i></button>
+        </div>
+    </section>
+
+    <!-- highscores section -->
+    <section class="container" id="high-scores-section">
+        <div id="highScores" class="flex-center flex-column">
+            <h1 id="finalScore">Leaderboard</h1>
+            <ul id="highScoresList"></ul>
+            <button id="highscores_to_home" class="btn">Go Home<i class="fas fa-home"></i></button>
+        </div>
+    </section>
+    <!-- <script type="module" src="scripts/main.js"></script> -->
+</body>
+</html>

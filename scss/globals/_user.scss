@@ -1,0 +1,193 @@
+#quizes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    color: black;
+    --margin: 1rem;
+    width: calc(25% - 2 * var(--margin));
+    margin: var(--margin);
+    background-color: yellow;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 3px 10px rgb(239, 135, 135);
+}
+
+.card:hover {
+    transform: scale(1.02);
+    transform: transform 100ms;
+}
+
+.card > {
+    div > {
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.card > {
+    h4 {
+        font-size: 2rem;
+        margin: 1rem 0;
+    }
+}
+
+// .card {
+//     div > {
+//         p {
+//             font-size: 1.5rem;
+//             margin: auto auto auto 0;
+//             /* margin-bottom: 1rem; */
+//         }
+//     }
+// }
+
+.card-infos {
+    p {
+        font-size: 1.5rem;
+        margin: auto auto auto 0;
+        /* margin-bottom: 1rem; */
+    }
+}
+
+.del-button {
+    font-size: 1rem;
+    background-color: orange;
+    padding: 1rem;
+    border-radius: 50px;
+    margin-left: auto;
+    color: black;
+    i {
+        cursor: pointer;
+        margin: auto;
+        font-size: 1.5rem;
+    }
+}
+
+// .card > {
+//     div > {
+//         button {
+//             font-size: 1rem;
+//             background-color: orange;
+//             padding: 1rem;
+//             border-radius: 50px;
+//             margin-left: auto;
+//         }
+//     }
+// }
+
+.card-button {
+    cursor: pointer;
+}
+
+.card-infos {
+    display: flex;
+}
+
+header > {
+    nav {
+        display: flex;
+        margin: 0 auto;
+        padding-top: 2rem;
+    }
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background-color: rgb(29, 26, 26);
+    z-index: 10;
+    padding-bottom: 2rem;
+    nav {
+        margin-right: 1rem;
+        margin-left: 1rem;
+        ul {
+            display: flex;
+            h2 {
+                margin-right: 1.5rem;
+            }
+            button {
+                color: white;
+                background-color: rgb(29, 26, 26);
+                cursor: pointer;
+            }
+            a {
+                color: white;
+                text-decoration: none;
+            }
+        }
+        h2 {
+            margin-left: auto;
+            padding: .4rem;
+            margin-bottom: 0;
+            font-size: 2rem;
+        }
+    }
+}
+
+#user-section {
+    width: 110rem;
+    margin: auto;
+}
+
+#logout-button {
+    font-size: 2rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: white;
+    margin-left: 1rem;
+    background-color: red;
+    padding: .4rem;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1120px) {
+    #user-section {
+        width: 75rem;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        width: calc(33% - 2 * var(--margin));
+        margin: var(--margin);
+    }
+
+    #user-section {
+        width: 55rem;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .card {
+        width: calc(50% - 2 * var(--margin));
+        margin: var(--margin);
+    }
+
+    #user-section {
+        width: 40rem;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .card {
+        width: calc(100% - 2 * var(--margin));
+        min-width: 200px;
+        margin: var(--margin);
+    }
+
+    #user-section {
+        width: 35rem;
+        margin: auto;
+    }
+
+    nav {
+        min-width: 250px;
+    }
+}

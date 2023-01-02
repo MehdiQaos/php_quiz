@@ -1,10 +1,10 @@
-import { allQuestions } from "./data.js";
-
 const containers = document.querySelectorAll('.container');
-const home_section = document.getElementById('home-section');
+const sections = document.querySelectorAll('.section');
+const home_section = document.getElementById('readytoplay-section');
 const quiz_section = document.getElementById('quiz-section');
 const highScores_section = document.getElementById('high-scores-section');
 const scoreSaving_section = document.getElementById('score-saving-section');
+const quizCards = document.querySelectorAll('.card-button');
 
 const play_btn = document.getElementById('play-btn');
 const highScores_btn = document.getElementById('highscores-btn');
@@ -13,16 +13,30 @@ const save_score_btn = document.getElementById('save_score_Btn');
 const saving_to_quiz_btn = document.getElementById('saving_to_quiz');
 const saving_to_home_btn = document.getElementById('saving_to_home');
 const userNameInput = document.getElementById('username');
+const timerElm = document.getElementById('timer');
 
 const userName = document.getElementById('username');
 const MAX_HIGH_SCORES = 5;
 
-let question, score = 0, questionNumber = 0, numQuestions = allQuestions.length;
+let question, timer, timeOut, score = 0, questionNumber = 0, numQuestions;
 const SCORE_POINTS = 50;
-let availableQuestions;
+let allQuestions, availableQuestions;
+
+quizCards.forEach(card => {
+    card.addEventListener('click', function() {
+        quizId = this.dataset.id;
+        fetch(`../includes/quiz.inc.php?getquiz=${quizId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                allQuestions = data;
+                go_home();
+            });
+    });
+});
 
 function go_home() {
-    containers.forEach(container => container.classList.add('hidden'));
+    // containers.forEach(container => container.classList.add('hidden'));
+    sections.forEach(container => container.classList.add('hidden'));
     home_section.classList.remove('hidden');
 }
 
@@ -81,9 +95,6 @@ save_score_btn.addEventListener('click', (e) => {
     go_home();
 });
 
-// quiz section
-
-
 function start_quiz() {
     score = 0, questionNumber = 0, numQuestions = allQuestions.length;
     document.getElementById('score').innerText = score;
@@ -95,7 +106,7 @@ function remove_choices() {
     document.querySelectorAll(".choice-container").forEach(e => e.remove());
 }
 
-function make_choices(choices) {
+function make_choices(choices, multiple) {
     shuffle(choices);
     let letterCode = 65; // ASCII code of 'A'
     choices.forEach(choice => {
@@ -110,15 +121,30 @@ function make_choices(choices) {
         choiceContainer.querySelector('.choice-text').innerText = choice.text;
         quiz.appendChild(choiceContainer);
         
-        document.querySelectorAll('.choice-container').forEach(choice => {
-            choice.addEventListener('click', get_answer);
-        })
+        if (multiple) {
+            choiceContainer.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        }
+        else
+            choiceContainer.addEventListener('click', get_answer);
     });
+    if (multiple) {
+        const submitBtn = document.createElement('div');
+        submitBtn.classList.add('flex-center');
+        submitBtn.id = 'submit-btn';
+        submitBtn.innerHTML = "<button class='btn yellow-btn'>Submit</button>";
+        quiz.appendChild(submitBtn);
+        submitBtn.addEventListener('click', get_answer_multiple);
+    }
 }
 
 function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
 }
+
+const timerProgress = document.getElementById('timer-progressFull');
+let myInterval;
 
 function new_question() {
     if (availableQuestions.length == 0) {
@@ -127,10 +153,23 @@ function new_question() {
         scoreSaving_section.classList.remove('hidden');
         return;
     }
-
     questionNumber++;
     question = availableQuestions.pop();
     remove_choices();
+
+    timer = question.time * 1000;
+    myInterval = setInterval(() => {
+        timer -= 10;
+        if (timer == 0) {
+            clearInterval(myInterval);
+            new_question();
+        }
+        else {
+            timerProgress.style.width = `${parseInt(timer / (question.time * 1000) * 100)}%`;
+            timerElm.innerText = parseInt(timer / 1000) + 1;
+        }
+    }, 10);
+
     document.getElementById('question').innerText = question.question;
     document.getElementById('progressBarFull').style.width = `${Math.floor(questionNumber / numQuestions * 100)}%`; 
     document.getElementById('progressText').innerText = `Question ${questionNumber} of ${numQuestions}`;
@@ -139,10 +178,49 @@ function new_question() {
     for (const [index, choice] of choices.entries()) {
         assoc_choices.push({number: index + 1, text: choice});
     }
-    make_choices(assoc_choices);
+    make_choices(assoc_choices, question.multiple);
 }
 
-function get_answer(e) {
+function get_answer_multiple() {
+    let correctAnswer = true;
+    clearInterval(myInterval);
+    let answers = [], wrongAnswers = [];
+    document.querySelectorAll('.choice-container').forEach(choice => {
+        if (choice.classList.contains('checked')) {
+            answers.push(choice);
+        }
+    });
+
+    console.log(typeof(question.answer));
+
+    for (const answer of answers) {
+        if (!question.answer.includes(answer.dataset.number)) {
+            correctAnswer = false;
+            wrongAnswers.push(answer);
+        }
+    }
+
+    if (correctAnswer) {
+        score += SCORE_POINTS;
+        document.getElementById('score').innerText = score;
+    }
+    else {
+        // TODO: use functional style (filter?)
+        wrongAnswers.forEach(choice => { 
+            choice.classList.toggle('incorrect');
+            choice.classList.toggle('checked');
+        });
+    }
+    document.querySelectorAll('.choice-container').forEach(choice => {
+        if (question.answer.includes(choice.dataset.number))
+            choice.classList.add('correct');
+    });
+    setTimeout(() => new_question(), 1000);
+    document.getElementById('submit-btn').remove();
+}
+
+function get_answer() {
+    clearInterval(myInterval);
     let number = this.dataset.number;
     if (question.answer === number) {
         score += SCORE_POINTS;
@@ -151,7 +229,8 @@ function get_answer(e) {
     }
     else {
         this.classList.add('incorrect');
-        document.querySelectorAll('.choice-container').forEach(choice => {
+        // TODO: use functional style (filter?)
+        document.querySelectorAll('.choice-container').forEach(choice => { 
             if (choice.dataset.number == question.answer) {
                 choice.classList.add('correct');
             }
@@ -160,4 +239,4 @@ function get_answer(e) {
     setTimeout(() => new_question(), 1000);
 }
 
-go_home();
+// go_home();
