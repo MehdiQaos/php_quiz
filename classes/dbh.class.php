@@ -3,7 +3,7 @@
 class Dbh {
     private $host = 'localhost';
     private $user = 'root';
-    private $pwd = 'piq';
+    private $pwd = '';
     private $dbName = 'quizDb';
 
     public function connect() { //TODO: try static

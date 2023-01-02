@@ -1,11 +1,13 @@
 const containers = document.querySelectorAll('.container');
 const sections = document.querySelectorAll('.section');
+const user_section = document.getElementById('user-section');
 const home_section = document.getElementById('readytoplay-section');
 const quiz_section = document.getElementById('quiz-section');
 const highScores_section = document.getElementById('high-scores-section');
 const scoreSaving_section = document.getElementById('score-saving-section');
 const quizCards = document.querySelectorAll('.card-button');
 
+const goBAckBtn = document.getElementById('goback-btn');
 const play_btn = document.getElementById('play-btn');
 const highScores_btn = document.getElementById('highscores-btn');
 const highScores_to_home_btn = document.getElementById('highscores_to_home');
@@ -18,14 +20,14 @@ const timerElm = document.getElementById('timer');
 const userName = document.getElementById('username');
 const MAX_HIGH_SCORES = 5;
 
-let question, timer, timeOut, score = 0, questionNumber = 0, numQuestions;
+let question, timer, timeOut, score = 0, questionNumber = 0, numQuestions, acceptingQuestions;
 const SCORE_POINTS = 50;
 let allQuestions, availableQuestions;
 
 quizCards.forEach(card => {
     card.addEventListener('click', function() {
         quizId = this.dataset.id;
-        fetch(`../includes/quiz.inc.php?getquiz=${quizId}`)
+        fetch(`./includes/quiz.inc.php?getquiz=${quizId}`)
             .then((res) => res.json())
             .then((data) => {
                 allQuestions = data;
@@ -35,7 +37,6 @@ quizCards.forEach(card => {
 });
 
 function go_home() {
-    // containers.forEach(container => container.classList.add('hidden'));
     sections.forEach(container => container.classList.add('hidden'));
     home_section.classList.remove('hidden');
 }
@@ -72,7 +73,7 @@ saving_to_quiz_btn.addEventListener('click', () => {
 
 saving_to_home_btn.addEventListener('click', () => {
     scoreSaving_section.classList.add('hidden');
-    home_section.classList.remove('hidden');
+    user_section.classList.remove('hidden');
 });
 
 userNameInput.addEventListener('keyup', () => {
@@ -104,6 +105,12 @@ function start_quiz() {
 
 function remove_choices() {
     document.querySelectorAll(".choice-container").forEach(e => e.remove());
+}
+
+function remove_submit_button() {
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn)
+        submitBtn.remove();
 }
 
 function make_choices(choices, multiple) {
@@ -153,9 +160,11 @@ function new_question() {
         scoreSaving_section.classList.remove('hidden');
         return;
     }
+    acceptingQuestions = true;
     questionNumber++;
     question = availableQuestions.pop();
     remove_choices();
+    remove_submit_button();
 
     timer = question.time * 1000;
     myInterval = setInterval(() => {
@@ -182,6 +191,9 @@ function new_question() {
 }
 
 function get_answer_multiple() {
+    if (!acceptingQuestions)
+        return;
+    acceptingQuestions = false;
     let correctAnswer = true;
     clearInterval(myInterval);
     let answers = [], wrongAnswers = [];
@@ -190,8 +202,6 @@ function get_answer_multiple() {
             answers.push(choice);
         }
     });
-
-    console.log(typeof(question.answer));
 
     for (const answer of answers) {
         if (!question.answer.includes(answer.dataset.number)) {
@@ -220,6 +230,9 @@ function get_answer_multiple() {
 }
 
 function get_answer() {
+    if (!acceptingQuestions)
+        return;
+    acceptingQuestions = false;
     clearInterval(myInterval);
     let number = this.dataset.number;
     if (question.answer === number) {
