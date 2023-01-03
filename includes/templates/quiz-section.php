@@ -1,14 +1,5 @@
-<section class="container section hidden" id="quiz-section" style="height: auto;">
-    <!-- <div>
-        <div id="stepper-component">
-            <div class="stepper-bar">
-                <div class="stepper-bar-progress"></div>
-            </div>
-            <div class="stepper-item"><i class="fa-solid fa-book"></i></div>
-            <div class="stepper-item"><i class="fa-solid fa-clipboard-question"></i></div>
-            <div class="stepper-item"><i class="fa-regular fa-floppy-disk"></i></div>
-        </div>
-    </div> -->
+<section class="section hidden" id="quiz-section" style="height: auto;">
+    <div class="container">
     <div id="quiz" class="justify-center flex-column">
         <div id="quiz-info">
             <div class="quiz-info-item">
@@ -29,5 +20,6 @@
                 <div id="timer-progressFull"></div>
             </div>
         <h1 id="question"></h1>
+    </div>
     </div>
 </section>

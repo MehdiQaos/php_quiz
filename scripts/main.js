@@ -6,6 +6,8 @@ const quiz_section = document.getElementById('quiz-section');
 const highScores_section = document.getElementById('high-scores-section');
 const scoreSaving_section = document.getElementById('score-saving-section');
 const quizCards = document.querySelectorAll('.card-button');
+const progressBar = document.getElementById("progress-bar");
+const stepper = document.getElementById("progress");
 
 const goBAckBtn = document.getElementById('goback-btn');
 const play_btn = document.getElementById('play-btn');
@@ -44,6 +46,10 @@ function go_home() {
 play_btn.addEventListener('click', () => {
     home_section.classList.add('hidden');
     quiz_section.classList.remove('hidden');
+    stepper.remove();
+    quiz_section.prepend(stepper);
+    active = 2;
+    updateProgress();
     start_quiz();
 });
 
@@ -73,6 +79,10 @@ highScores_btn.addEventListener('click', () => {
 highScores_to_home_btn.addEventListener('click', () => {
     highScores_section.classList.add('hidden');
     home_section.classList.remove('hidden');
+    active = 1;
+    updateProgress()
+    stepper.remove();
+    home_section.prepend(stepper);
 });
 
 saving_to_quiz_btn.addEventListener('click', () => {
@@ -268,5 +278,42 @@ function get_answer() {
     }
     setTimeout(() => new_question(), 1000);
 }
+// const progressNext = document.getElementById("progress-next");
+// const progressPrev = document.getElementById("progress-prev");
+const steps = document.querySelectorAll(".step");
+let active = 1;
 
-// go_home();
+// progressNext.addEventListener("click", () => {
+//     if (active < steps.length) {
+//         active++;
+//         updateProgress();
+//     }
+// });
+
+// progressPrev.addEventListener("click", () => {
+//     if (active > 1) {
+//         active--;
+//         updateProgress();
+//     }
+// });
+
+const updateProgress = () => {
+    // toggle active class on list items
+    steps.forEach((step, i) => {
+        if (i < active) {
+            step.classList.add("active");
+        } else {
+            step.classList.remove("active");
+        }
+    });
+    // set progress bar width  
+    progressBar.style.width =
+        ((active - 1) / (steps.length - 1)) * 100 + "%";
+    // enable disable prev and next buttons
+    // progressPrev.disabled = false;
+    // progressNext.disabled = false;
+    // if (active === 1)
+    //     progressPrev.disabled = true;
+    // else if (active === steps.length)
+    //     progressNext.disabled = true;
+};
