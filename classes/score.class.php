@@ -2,7 +2,7 @@
 
 class Score extends Dbh {
     public function topScores($quizId, $top) {
-        $sql = "SELECT Scores.points, Users.username
+        $sql = "SELECT Scores.points as score, Users.username as name
                 FROM Scores
                 JOIN Users
                 ON Scores.user_id = Users.id

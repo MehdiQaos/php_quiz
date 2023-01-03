@@ -8,6 +8,10 @@
 </head>
 <body>
     <form method="GET" action="test2.php">
+        <input type="text" name="aaa" value="mehdi">
+        <input type="text" name="bbb" value="mehdi">
+        <input type="text" name="ccc" value="mehdi">
+        <input type="text" name="ddd" value="mehdi">
         <button name="piq">button</button>
     </form>
 </body>

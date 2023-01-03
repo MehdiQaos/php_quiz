@@ -20,7 +20,7 @@ const timerElm = document.getElementById('timer');
 const userName = document.getElementById('username');
 const MAX_HIGH_SCORES = 5;
 
-let question, timer, timeOut, score = 0, questionNumber = 0, numQuestions, acceptingQuestions;
+let question, timer, timeOut, score = 0, questionNumber = 0, numQuestions, quizId, acceptingQuestions;
 const SCORE_POINTS = 50;
 let allQuestions, availableQuestions;
 
@@ -52,12 +52,22 @@ highScores_btn.addEventListener('click', () => {
     highScores_section.classList.remove('hidden');
 
     const highScoresList = document.getElementById('highScoresList');
-    const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    // const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    let highScores;
 
-    let i = 1;
-    highScoresList.innerHTML = highScores.map(score => {
-        return `<li class="high-score">${i++}- ${score.name} : ${score.score}</li>`;
-    }).join('');
+    fetch(`./includes/score.inc.php?quiz_id=${quizId}&top=${3}&topscores=`)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            highScores = data;
+            let i = 1;
+            highScoresList.innerHTML = highScores.map(score => {
+                return `<li class="high-score">${i++}- ${score.name} : ${score.score}</li>`;
+            }).join('');
+        });
+
+    // console.log(highScores);
+
 });
 
 highScores_to_home_btn.addEventListener('click', () => {
@@ -82,18 +92,25 @@ userNameInput.addEventListener('keyup', () => {
 
 save_score_btn.addEventListener('click', (e) => {
     e.preventDefault();
-    const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
-    const newScore = {
-        score: score,
-        name: userName.value
-    };
+    fetch(`./includes/score.inc.php?quiz_id=${quizId}&points=${score}&savescore=`)
+        .then((res) => res.text())
+        .then((data) => {
+            scoreSaving_section.classList.add('hidden');
+            user_section.classList.remove('hidden');
+        });
+         
     userName.value = '';
-    highScores.push(newScore);
-    highScores.sort((a, b) => b.score - a.score);
-    highScores.splice(MAX_HIGH_SCORES);
+    // const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    // const newScore = {
+    //     score: score,
+    //     name: userName.value
+    // };
+    // highScores.push(newScore);
+    // highScores.sort((a, b) => b.score - a.score);
+    // highScores.splice(MAX_HIGH_SCORES);
 
-    localStorage.setItem('highScores', JSON.stringify(highScores));
-    go_home();
+    // localStorage.setItem('highScores', JSON.stringify(highScores));
+    // go_home();
 });
 
 function start_quiz() {

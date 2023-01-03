@@ -11,5 +11,13 @@ if (isset($_GET['savescore'])) {
     $points = $_GET['points'];
 
     $score = new Score;
-    echo $score->topScores(2, 3);
+    $score->saveScore($user_id, $quiz_id, $points);
+    echo $user_id; //delete
+}
+else if (isset($_GET['topscores'])) {
+    $quiz_id = $_GET['quiz_id'];
+    $top = $_GET['top'];
+
+    $score = new Score;
+    echo $score->topScores($quiz_id, $top);
 }
