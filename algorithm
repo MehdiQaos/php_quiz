@@ -1,0 +1,48 @@
+start:
+    get list of quizes
+    make cards, and for each one set the id of the quiz in dataset attribute
+    add event listeners for all cards and set the callback to `start_quiz` function:
+
+start_quiz:
+    fetch data of the quiz from the database as json
+    initialize quiz variables: score=0, questionNumber=0, numQuestions
+    make a new list of the questions sorted in randomized order
+    call the new_question function
+
+new_question:
+    if questionNumber == numQuestions:
+        return from the function
+    increment questionNumber
+    get a new question
+    get the choices of the question and put them in random order
+    call make_choices function
+    set the timer by calling setInterval function and set callback to `timer` function
+
+timer:
+    if timer variable == 0:
+        call clearInterval(myInterval)
+        call new_question()
+    else:
+        increment the progressbar width
+        increment timerElm innerText
+
+make_choices:
+    shuffle the choices
+    make a dom element for each choice and set the dataset.number to the index of that choice
+    add an event listener to each choice and set the callback to `get_answer`
+    if the question is multiple add a submit button
+
+get_answer:
+    if acceptingQuestion=false:
+        return
+    acceptingQuestions=true
+    clearInterval(myInterval)
+    if question.answer=choice.dataset.index:
+        increment score
+        scoreElm.inneText=score
+        add `correct` class to the choice
+    else:
+        add `incorrect` class to the choice
+        add `correct` class to the right choice
+
+    set a timeout of 1 second and set the callback to `new_question`

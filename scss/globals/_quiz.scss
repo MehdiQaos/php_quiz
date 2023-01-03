@@ -80,6 +80,48 @@
     background: rgb(11, 99, 223);
 }
 
+// #stepper-component {
+//     --item-margin: 45px;
+//     display: flex;
+//     position: relative;
+//     justify-content: space-between;
+//     align-items: center;
+//     width: 50%;
+//     margin-top: 5rem;
+//     margin-bottom: 5rem;
+//     margin-left: auto;
+//     margin-right: auto;
+// }
+// .stepper-item {
+//     position: absolute;
+//     width: var(--item-margin);
+//     padding: 1rem;
+//     border-radius: 50%;
+//     color: blue;
+//     background-color: yellow;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+// }
+// .stepper-item:nth-child(1) {
+//     left: 0;
+// }
+// .stepper-item:nth-child(2) {
+//     left: 50%;
+// }
+// .stepper-item:nth-child(3) {
+//     left: 100%;
+// }
+// .stepper-item i {
+//     margin: 0;
+// }
+// .stepper-bar {
+//     width: 100%;
+//     flex-grow: 1;
+//     height: 1rem;
+//     background-color: gray;
+// }
+
 @media screen and (max-width: 768px) {
     .choice-container {
         min-width: 40rem;

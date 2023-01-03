@@ -17,7 +17,6 @@ session_start();
 </head>
 <body>
     <?php
-    // begin section
     if (!isset($_SESSION['user_info'])) {
         require 'includes/templates/begin-section.php';
     } else if ($_SESSION['user_info']['admin'] == '1') {
@@ -31,14 +30,6 @@ session_start();
     require_once 'includes/templates/score-saving-section.php';
     require_once 'includes/templates/highscores-section.php';
     ?>
-
-    <!-- home section -->
-
-    <!-- quiz section -->
-    <!-- score saving section -->
-
-    <!-- highscores section -->
-    <!-- <script type="module" src="scripts/main.js"></script> -->
     <script src="scripts/main.js"></script>
 </body>
 </html>
